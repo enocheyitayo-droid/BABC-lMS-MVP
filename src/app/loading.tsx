@@ -1,0 +1,1 @@
+export default function Loading() { return <main className="standalone" id="main-content" aria-busy="true"><div className="loading-line"/><h1>Opening your workspace…</h1><p>Checking school access.</p></main>; }

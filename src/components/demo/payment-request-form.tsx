@@ -1,0 +1,13 @@
+"use client";
+import { useState } from "react";
+import { useFormStatus } from "react-dom";
+import { requestDisbursement } from "@/lib/demo/extended-actions";
+type Staff={id:string;name:string;title:string;monthly_amount:number};
+function Submit({salary}:{salary:boolean}){const {pending}=useFormStatus();return <button className="button primary" disabled={pending}>{pending?"Submitting…":salary?"Submit salary request":"Submit expense request"}</button>;}
+export function PaymentRequestForm({staff,currentMonth}:{staff:Staff[];currentMonth:string}){
+  const [kind,setKind]=useState("Salary"),[staffId,setStaffId]=useState(staff[0]?.id??""),[period,setPeriod]=useState(currentMonth);
+  const person=staff.find(p=>p.id===staffId),salary=kind==="Salary";
+  const month=/^\d{4}-(0[1-9]|1[0-2])$/.test(period)?new Intl.DateTimeFormat("en-NG",{month:"long",year:"numeric",timeZone:"Africa/Lagos"}).format(new Date(`${period}-01T12:00:00Z`)):"Selected month";
+  const amount=new Intl.NumberFormat("en-NG",{style:"currency",currency:"NGN",maximumFractionDigits:0}).format((person?.monthly_amount??0)/100);
+  return <form action={requestDisbursement} className="stack settings-form"><label>Payment category<select name="kind" value={kind} onChange={e=>setKind(e.target.value)}><option>Salary</option><option>Expense</option></select></label>{salary?<><div className="form-grid"><label>Staff member<select name="staff_id" value={staffId} onChange={e=>setStaffId(e.target.value)} required>{staff.map(p=><option key={p.id} value={p.id}>{p.name} · {p.title}</option>)}</select></label><label>Salary month<input name="period" type="month" value={period} onChange={e=>setPeriod(e.target.value)} required/></label></div><div className="salary-request-summary" aria-live="polite"><div><span>Salary amount</span><strong>{amount}</strong></div><p>{month} salary for {person?.name??"selected staff member"}</p><small>Amount filled from the saved demo salary. Purpose and a unique reference are generated automatically.</small></div><p className="muted small">Review the teacher and month, then submit for head-of-school approval.</p></>:<><div className="form-grid"><label>Supplier / payee<input name="payee" required minLength={3} maxLength={100}/></label><label>Amount owed (₦)<input name="amount" type="number" min="0.01" max="99999999" step="0.01" required/></label><label>Invoice / request reference<input name="reference" required minLength={3} maxLength={80}/></label></div><label>Purpose / supporting evidence reference<textarea name="description" required minLength={5} maxLength={300}/></label></>}<div><Submit salary={salary}/></div></form>;
+}

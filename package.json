@@ -1,0 +1,40 @@
+{
+  "name": "teamville-school-management",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0",
+    "build": "next build",
+    "start": "next start --hostname 0.0.0.0",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:db": "vitest run tests/tenancy.test.ts",
+    "bootstrap": "node --env-file-if-exists=.env.local scripts/bootstrap.mjs"
+  },
+  "dependencies": {
+    "@netlify/database": "^2.0.1",
+    "@supabase/ssr": "latest",
+    "@supabase/supabase-js": "latest",
+    "lucide-react": "latest",
+    "next": "16.4.3",
+    "pg": "^8.23.1",
+    "react": "latest",
+    "react-dom": "latest",
+    "server-only": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "latest",
+    "@tailwindcss/postcss": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "eslint": "latest",
+    "eslint-config-next": "16.4.3",
+    "tailwindcss": "latest",
+    "typescript": "latest",
+    "vitest": "latest"
+  }
+}

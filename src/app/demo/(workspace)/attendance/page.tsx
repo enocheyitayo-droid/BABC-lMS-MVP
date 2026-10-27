@@ -1,0 +1,12 @@
+import { AttendanceForm } from "@/components/demo/attendance-form";
+import { DemoPanel, Empty, Feedback, PageTitle, Status } from "@/components/demo/ui";
+import { classes, db, pupils, requireDemo, schoolDate } from "@/lib/demo/store";
+export default async function AttendancePage({searchParams}:{searchParams:Promise<{class?:string;date?:string;success?:string;error?:string}>}) {
+  const context=await requireDemo(["school_admin","teacher","guardian"]), search=await searchParams;
+  const date=/^\d{4}-\d{2}-\d{2}$/.test(search.date??"")?search.date!:schoolDate();
+  const className=context.role==="teacher"||context.role==="guardian"?"Primary 3":classes.includes(search.class??"")?search.class!:"Primary 3";
+  const register=pupils(context,"",className);
+  const rows=db().prepare("SELECT student_id,status,updated_at FROM attendance WHERE workspace=? AND school_date=?").all(context.id,date) as {student_id:string;status:string;updated_at:string}[];
+  const initial=Object.fromEntries(rows.filter(r=>register.some(p=>p.id===r.student_id)).map(r=>[r.student_id,r.status]));
+  return <main id="main-content" className="main-content"><PageTitle title={context.role==="guardian"?"My child’s attendance":"Attendance register"} description="A clear record of every school day."/><Feedback {...search}/><DemoPanel title={`${className} · ${date}`} description="First term · 2026/2027"><form className="filter-bar"><label>Class<select name="class" defaultValue={className}>{(context.role==="school_admin"?classes:["Primary 3"]).map(c=><option key={c}>{c}</option>)}</select></label><label>School date<input type="date" name="date" defaultValue={date} required/></label><button className="button secondary">Load register</button></form>{!register.length?<Empty text="There are no pupils in this class."/>:context.role==="guardian"?<div className="table-wrapper"><table><thead><tr><th>Pupil</th><th>Date</th><th>Status</th></tr></thead><tbody>{register.map(p=><tr key={p.id}><td>{p.first_name} {p.last_name}</td><td>{date}</td><td><Status>{initial[p.id]??"Unmarked"}</Status></td></tr>)}</tbody></table></div>:<AttendanceForm key={`${className}-${date}-${JSON.stringify(initial)}`} pupils={register} date={date} className={className} initial={initial}/>}</DemoPanel><p className="page-footnote">The school date uses Africa/Lagos. Each pupil has one record per day; later saves are auditable corrections.</p></main>;
+}
