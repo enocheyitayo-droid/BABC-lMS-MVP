@@ -15,7 +15,7 @@ const source=String.raw`
   types.setTypeParser(20,value=>{const n=Number(value);if(!Number.isSafeInteger(n))throw new Error('Unsafe integer');return n;});
   let client;
   async function connected(){
-    if(!client){const next=new Client({connectionString:workerData.url,connectionTimeoutMillis:15000,query_timeout:25000,options:'-c search_path=teamville_demo,public'});next.on('error',()=>{client=undefined;});try{await next.connect();client=next;}catch(e){await next.end().catch(()=>{});throw e;}}
+    if(!client){const next=new Client({connectionString:workerData.url,connectionTimeoutMillis:15000,query_timeout:25000});next.on('error',()=>{client=undefined;});try{await next.connect();await next.query('SET search_path TO teamville_demo, public');client=next;}catch(e){await next.end().catch(()=>{});throw e;}}
     return client;
   }
   parentPort.on('message',async ({sql,params,shared})=>{
