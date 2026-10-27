@@ -1,6 +1,7 @@
 import "server-only";
 import { Worker } from "node:worker_threads";
 import { createRequire } from "node:module";
+import "pg";
 import { postgresSql } from "./postgres-sql";
 
 // The existing demo uses short synchronous SQLite transactions. A dedicated
@@ -30,8 +31,11 @@ const source=String.raw`
 export class PostgresDatabase {
   private worker:Worker;
   constructor(url:string,pgModule?:string){
-    const require=createRequire(import.meta.url);
-    this.worker=new Worker(source,{eval:true,workerData:{url,pgModule:pgModule??require.resolve("pg")}});
+    // Resolve through Node at runtime. A literal require.resolve("pg") is
+    // rewritten to a numeric module ID by Turbopack, which a worker cannot load.
+    const runtimeRequire=createRequire(`${process.cwd()}/package.json`);
+    const driverName=["p","g"].join("");
+    this.worker=new Worker(source,{eval:true,workerData:{url,pgModule:pgModule??runtimeRequire.resolve(driverName)}});
     this.worker.on("error",()=>{ /* Query timeout returns a safe error to the caller. */ });
     this.worker.unref();
   }
