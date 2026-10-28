@@ -15,3 +15,9 @@ The home page is a demonstration of a school website connected to the existing /
 ## Implementation
 
 BABC work is isolated from the Skyward checkout, using a managed worktree based on previous-school/master. The public home page alone is changed; portal roles, credentials, database and branding are retained. All website CSS uses the school-site scope. Mobile navigation uses a native disclosure with keyboard access. Campus art is labelled as an illustration rather than a real school photograph.
+
+## Reference redesign
+
+The user supplied a navy-and-gold preparatory-school reference image. The revised page follows its contact strip, white navigation, photo hero, overlapping feature row, academic cards, navy band, campus gallery, three-column updates, gold admissions banner and navy footer. The sample's invented success statistics and family testimonials were not copied. The school motto replaces the statistic band; news cards replace unverified testimonials.
+
+Hero and campus-life imagery are AI generated demonstration assets, labelled in the page. Originals are retained under the Codex generated_images directory and project copies are WebP files under public/images. They are not presented as photographs of BABC students or facilities. Supplied school photographs can replace them later.
