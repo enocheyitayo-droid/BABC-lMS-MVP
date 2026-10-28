@@ -1,3 +1,4 @@
+import { initializeWebsite } from "./website";
 import type { DatabaseSync } from "node:sqlite";
 import { mkdirSync } from "node:fs";
 import { dirname,join } from "node:path";
@@ -33,4 +34,5 @@ export function initializeMvp(sql:DatabaseSync,path:string) {
     CREATE TABLE IF NOT EXISTS substitutions(id TEXT PRIMARY KEY,slot_id TEXT REFERENCES timetable(id),school_date TEXT NOT NULL,teacher_id TEXT NOT NULL REFERENCES accounts(id),UNIQUE(slot_id,school_date));
     CREATE TABLE IF NOT EXISTS staff_meetings(id TEXT PRIMARY KEY,title TEXT NOT NULL,school_date TEXT NOT NULL,starts TEXT NOT NULL,link TEXT NOT NULL,minutes TEXT NOT NULL DEFAULT '',created_by TEXT REFERENCES accounts(id));
   `);
+  initializeWebsite({sql});
 }

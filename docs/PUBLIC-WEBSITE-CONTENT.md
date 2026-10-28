@@ -21,3 +21,15 @@ BABC work is isolated from the Skyward checkout, using a managed worktree based 
 The user supplied a navy-and-gold preparatory-school reference image. The revised page follows its contact strip, white navigation, photo hero, overlapping feature row, academic cards, navy band, campus gallery, three-column updates, gold admissions banner and navy footer. The sample's invented success statistics and family testimonials were not copied. The school motto replaces the statistic band; news cards replace unverified testimonials.
 
 Hero and campus-life imagery are AI generated demonstration assets, labelled in the page. Originals are retained under the Codex generated_images directory and project copies are WebP files under public/images. They are not presented as photographs of BABC students or facilities. Supplied school photographs can replace them later.
+
+## Forms and events expansion
+
+The crest ribbon blue is used as the website accent (#087db6), with deeper blues for text and surfaces. All main navigation links now open dedicated pages: /about, /academics, /admissions, /campus-life, /events and /contact. /enquiry provides the enquiry form. /events/career-day accepts attendee, speaker and sponsor expressions of interest; /events/[eventId] shows other published events.
+
+Forms persist to website_submissions through server actions. Validation includes allowed form types, required consent and contact information, bounded fields, a honeypot, three distinct requests per email per hour, and idempotent retry for identical requests. No admission, speaker slot, sponsorship agreement, event place or payment is automatically approved. No email/SMS confirmation is sent. Public pages do not expose submissions.
+
+Principal and ICT can review requests and change their status at /portal/website. The academic lead can manage public events but cannot read the submissions inbox. All three roles can create/edit events, publish/hide them and leave dates blank until confirmed. The initial midterm, examinations and Career Day cards have no invented dates. Changes to public calendar entries are audit logged. Daily/manual logical backups now include website submissions and events; recovery also accepts older backups without those tables.
+
+The MVP is intentionally public with known staff trial credentials. Forms explicitly request fictional details only, and /privacy explains this limitation. Disable demo access and trial credentials, introduce personal staff accounts, and agree school privacy/retention policies before collecting real applications.
+
+Scroll-reveal and hover transitions respect prefers-reduced-motion; native anchor scrolling is smooth unless reduced motion is requested. Content remains visible without JavaScript and in print.

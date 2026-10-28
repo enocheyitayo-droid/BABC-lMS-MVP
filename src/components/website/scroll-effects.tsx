@@ -1,0 +1,4 @@
+"use client";
+import { useEffect } from 'react';
+import {usePathname} from 'next/navigation';
+export function ScrollEffects(){const pathname=usePathname();useEffect(()=>{const media=window.matchMedia('(prefers-reduced-motion: reduce)');if(media.matches)return;const items=document.querySelectorAll<HTMLElement>('.web-section,.web-about-grid,.web-features article,.web-event-card,.web-values>div,.web-admissions');if(!('IntersectionObserver' in window))return;const observer=new IntersectionObserver(entries=>{for(const e of entries)if(e.isIntersecting){e.target.classList.add('web-revealed');observer.unobserve(e.target);}},{threshold:.08});items.forEach(item=>{item.classList.add('web-reveal');observer.observe(item);});return()=>{observer.disconnect();items.forEach(i=>i.classList.remove('web-reveal','web-revealed'));};},[pathname]);return null;}

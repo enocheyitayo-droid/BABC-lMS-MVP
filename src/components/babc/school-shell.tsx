@@ -22,6 +22,7 @@ export function SchoolShell({account,view,children}:{account:Account;view:string
   const hasClass=account.role==="teacher"&&schoolDb().formClasses(account).length>0;
 
   const {primary,more}=navigationFor(account.role,hasClass);
+  if(["principal","ict","academic_lead"].includes(account.role))more.push({name:"Website inbox & events",href:"/portal/website",key:"website",icon:"notices"});
 
   const activeView=view==="registers"?"subjects":view;
 
