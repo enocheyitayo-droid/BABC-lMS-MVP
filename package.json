@@ -11,9 +11,12 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:db": "vitest run tests/tenancy.test.ts",
-    "bootstrap": "node --env-file-if-exists=.env.local scripts/bootstrap.mjs"
+    "bootstrap": "node --env-file-if-exists=.env.local scripts/bootstrap.mjs",
+    "backup": "node --env-file-if-exists=.env.local scripts/babc-backup.mjs",
+    "restore:records": "node --env-file-if-exists=.env.local --import tsx scripts/babc-restore.ts"
   },
   "dependencies": {
+    "@netlify/blobs": "^11.1.7",
     "@netlify/database": "^2.0.1",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
@@ -34,6 +37,7 @@
     "eslint": "latest",
     "eslint-config-next": "16.4.3",
     "tailwindcss": "latest",
+    "tsx": "^4.23.15",
     "typescript": "latest",
     "vitest": "latest"
   }

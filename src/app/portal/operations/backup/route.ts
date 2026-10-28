@@ -1,0 +1,3 @@
+import { requireAccount,schoolDb } from "@/lib/babc/server";
+import { cloudStore,hostedDatabase } from "@/lib/babc/backups";
+export async function GET(request:Request){await requireAccount(["principal","ict"]);const key=new URL(request.url).searchParams.get("key")||"";if(!hostedDatabase(schoolDb().sql)||!/^((daily-\d{4}-\d{2}-\d{2})|(manual-[\dTZ.\-]+))\.json$/.test(key))return new Response("Backup unavailable",{status:404});const data=await cloudStore().get(key);if(data===null)return new Response("Backup not found",{status:404});return new Response(data,{headers:{"Content-Type":"application/json","Content-Disposition":`attachment; filename="${key}"`,"Cache-Control":"no-store"}});}

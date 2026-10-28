@@ -1,3 +1,2 @@
 import { redirect } from "next/navigation";
-import { supabaseConfig } from "@/lib/supabase/config";
-export default function Home() { redirect(supabaseConfig() ? "/dashboard" : "/demo"); }
+export default function Home() { redirect("/portal/login"); }

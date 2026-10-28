@@ -1,4 +1,24 @@
-# Teamville Montessori School — presentation MVP
+# BABC secondary school MVP
+
+See [the full school walkthrough](docs/MVP-WALKTHROUGH.md) for roles, result review, permanent records, finance, parents, support, coordination, and recovery. [Portal operations documentation](docs/BABC-PORTAL.md) covers the earlier build and local setup.
+
+Run `npm run dev -- --port 3001`, then open `/portal`. Tests: `npm test`; checks: `npm run lint`, `npm run typecheck`, and `npm run build`.
+
+Hosting uses Netlify Database (PostgreSQL), committed migrations under `netlify/database/migrations`, and private Netlify Blobs backups. Local development uses SQLite under the ignored `.data` directory. `.env.local`, `.data`, and `.netlify` are never committed.
+
+The initial hosted dataset is fictional. Trial accounts use the school-requested initial password; change passwords and create individual staff accounts before using real school records. No live payment transfer or email/SMS integration is connected.
+
+---
+
+# BABC secondary school portal
+
+The new Bodija-Ashi Baptist College portal opens at `/portal/login`, with an interactive staff demonstration at `/portal`. Start it with `npm run dev` (or `npm run dev -- --port 3001` if port 3000 is occupied). It includes principal, ICT, bursar, teacher, academic lead, and student access; student signup/sign-in; fees, verified payments, receipts, school purse, payroll, and academic registers, using the supplied BABC crest.
+
+**The BABC administration and student portals now have working authentication and a shared local SQLite backend.** Demo login uses fictional records; payment gateway collection is not connected. The earlier teaching collaboration preview retains its browser-saved records. See [BABC implementation and rollout notes](docs/BABC-PORTAL.md).
+
+The original Teamville implementation is retained below and remains available at `/demo/start`.
+
+## Teamville Montessori School — presentation MVP
 
 A working local demonstration for the head of school in Ibadan. The interface uses navy, purple and gold from the supplied school screenshot. The school logo supplied by the user is included unchanged at public/brand/teamville-logo.png.
 
