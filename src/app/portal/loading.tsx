@@ -1,0 +1,1 @@
+export default function PortalLoading(){return <main id="main-content" className="babc-route-loading" aria-busy="true" aria-label="Loading school workspace"><div className="babc-loading-heading"/><p role="status">Opening your school workspace…</p><div className="babc-loading-grid">{[1,2,3].map(n=><div key={n}/>)}</div><div className="babc-loading-panel"/></main>}

@@ -18,4 +18,6 @@ export async function proxy(request: NextRequest) {
   response.headers.set("Cache-Control", "private, no-store");
   return response;
 }
-export const config = { matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|webp)$).*)"] };
+// Supabase refresh belongs to the original dashboard. BABC uses its own
+// server-side session checks; public and /portal routes need no Supabase hop.
+export const config = { matcher: ["/dashboard/:path*", "/login", "/access"] };

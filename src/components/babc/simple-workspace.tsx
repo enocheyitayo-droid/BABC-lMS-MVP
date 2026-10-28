@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight,BookOpen,ClipboardCheck,GraduationCap,Users,Wallet,ShieldCheck,MonitorCog } from "lucide-react";
-import { schoolDb } from "@/lib/babc/server";
+import { schoolDb,dashboardCounts } from "@/lib/babc/server";
 import { type Account,today } from "@/lib/babc/database";
 import { Heading,Note,Panel,Status } from "./ui";
 import { AcademicRecords } from "@/lib/babc/academics";
@@ -19,9 +19,7 @@ export function SimpleHome({actor}:{actor:Account}){
   const db=schoolDb(),teacher=actor.role==="teacher";
   const heading=teacher?"Your teaching day":actor.role==="principal"?"School administration":actor.role==="ict"?"School setup & access":actor.role==="bursar"?"Fees & school payments":"Academic review";
   if(teacher){const formClasses=db.formClasses(actor);return <><AttentionQueue actor={actor}/><Heading title={heading} description="Choose a subject, then take attendance or enter scores."/><div className="babc-simple-intro"><span className="babc-mini-avatar">{actor.name.split(" ").at(-1)?.slice(0,2).toUpperCase()}</span><p>Welcome, <strong>{actor.name}</strong>. Your assigned classes are ready below.</p></div>{formClasses.length>0&&<section className="babc-form-teacher-card"><span className="babc-choice-icon"><Users size={23}/></span><div><span>Class teacher duties</span><h2>{formClasses.join(", ")}</h2><p>Daily class attendance and progress across subjects.</p></div><Link href="/portal/office?view=myclass" className="babc-btn babc-dark">Open my class <ArrowRight size={15}/></Link></section>}<h2 className="babc-simple-section-title">My subjects</h2><SubjectChoices actor={actor}/><p className="babc-simple-help">You only enter scores for the subjects assigned to you. ICT handles changes to your class or subject assignments.</p></>;}
-  const pending=(db.sql.prepare("SELECT count(*) n FROM accounts WHERE status='Pending'").get() as {n:number}).n;
-  const approvals=(db.sql.prepare("SELECT count(*) n FROM payables WHERE status='Requested'").get() as {n:number}).n;
-  const payments=(db.sql.prepare("SELECT count(*) n FROM payments WHERE status='Pending'").get() as {n:number}).n;
+  const counts=dashboardCounts(),pending=counts.pendingAccounts,approvals=counts.approvals,payments=counts.pendingPayments;
   const cards=actor.role==="principal"?[
     {title:"Students",text:"Find a student or check enrollment.",href:"/portal/office?view=students",label:"View students",icon:Users},
     {title:"Fees & receipts",text:"Check fees, balances, and payment receipts.",href:"/portal/office?view=finance",label:"Open fees",icon:Wallet},
